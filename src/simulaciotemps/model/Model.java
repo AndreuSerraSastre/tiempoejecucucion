@@ -16,7 +16,7 @@ import simulaciotemps.PerEsdeveniments;
 public class Model implements PerEsdeveniments {
 
     private SimulacioTemps prog;
-    private int[] n = {5, 10, 15, 20, 25};
+    private int[] n = {5, 10, 15, 20, 25, 30, 35};
     private int x;
     private int y;
     private double grau;
@@ -67,6 +67,7 @@ public class Model implements PerEsdeveniments {
                 quadratica(n);
                 break;
             case 2:
+                logaritmica(n);
                 break;
         }
         temps = System.nanoTime() - temps;
@@ -85,6 +86,14 @@ public class Model implements PerEsdeveniments {
 
     private void nnormal(int n) {
         for (int i = 0; i < n; i++) {
+            esperar(10);
+        }
+    }
+
+    private void logaritmica(int n) {
+        double t = (int) Math.log(n);
+        System.out.println(t);
+        for (int i = 0; i < t; i++) {
             esperar(10);
         }
     }
@@ -121,12 +130,15 @@ public class Model implements PerEsdeveniments {
     public void notificar(String s) {
         if (s.startsWith("IncGrau")) {
             this.incGrau();
-        } else if (s.startsWith("n")) {
-            tipus = 0;
         } else if (s.startsWith("n^2")) {
             tipus = 1;
+            this.incGrau();
+        } else if (s.startsWith("n")) {
+            tipus = 0;
+            this.incGrau();
         } else if (s.startsWith("log(n)")) {
             tipus = 2;
+            this.incGrau();
         }
     }
 }
