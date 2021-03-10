@@ -49,16 +49,19 @@ public class SimulacioTemps implements PerEsdeveniments {
                 con = null;
             }
         } else if (s.startsWith("n")) {
-            if (con != null) {
-                con.notificar("n");
+            if (con == null) {
+                con = new Control(this);
+                con.notificar(s);
             }
         } else if (s.startsWith("n^2")) {
-            if (con != null) {
-                con.notificar("n^2");
+            if (con == null) {
+                con = new Control(this);
+                con.notificar(s);
             }
         } else if (s.startsWith("log(n)")) {
-            if (con != null) {
-                con.notificar("log(n)");
+            if (con == null) {
+                con = new Control(this);
+                con.notificar(s);
             }
         } else if (s.startsWith("Picat:")) {
             s = s.substring(s.indexOf(":") + 1);

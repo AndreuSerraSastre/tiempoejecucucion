@@ -30,10 +30,7 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments, C
         super(s);
         prog = p;
         this.getContentPane().setLayout(new BorderLayout());
-        JPanel bots = new JPanel();
-        JButton boto1 = new JButton("Arrancar");
-        boto1.addActionListener(this);
-        bots.add(boto1);
+        JPanel bots = new JPanel();       
         JButton boto2 = new JButton("Parar");
         boto2.addActionListener(this);
         bots.add(boto2);

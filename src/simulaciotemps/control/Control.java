@@ -15,6 +15,7 @@ import simulaciotemps.PerEsdeveniments;
 public class Control extends Thread implements PerEsdeveniments {
 
     private final SimulacioTemps prog;
+    private String notificacion = "";
 
     public Control(SimulacioTemps p) {
         prog = p;
@@ -22,25 +23,22 @@ public class Control extends Thread implements PerEsdeveniments {
 
     @Override
     public void run() {
-            prog.getModel().notificar("IncGrau");
+        prog.getModel().notificar(notificacion);
     }
 
     @Override
     public void notificar(String s) {
-        System.out.println(s);
         if (s.startsWith("Parar")) {
             //seguir = false;
-        } else if (s.startsWith("Arrancar")) {
+        } else if (s.startsWith("n^2")) {
+            notificacion = s;
             this.start();
-        }
-        else if (s.startsWith("n")) {
-            prog.getModel().notificar("n");
-        }
-        else if (s.startsWith("n^2")) {
-            prog.getModel().notificar("n^2");
-        }
-        else if (s.startsWith("log(n)")) {
-            prog.getModel().notificar("log(n)");
+        } else if (s.startsWith("n")) {
+            notificacion = s;
+            this.start();
+        } else if (s.startsWith("log(n)")) {
+            notificacion = s;
+            this.start();
         }
     }
 }
