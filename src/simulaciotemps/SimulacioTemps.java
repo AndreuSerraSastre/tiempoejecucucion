@@ -63,14 +63,6 @@ public class SimulacioTemps implements PerEsdeveniments {
                 con = new Control(this);
                 con.notificar(s);
             }
-        } else if (s.startsWith("Picat:")) {
-            s = s.substring(s.indexOf(":") + 1);
-            int x = Integer.parseInt(s.substring(0, s.indexOf(",")));
-            int y = Integer.parseInt(s.substring(s.indexOf(",") + 1));
-            mod.setXY(x, y);
-        } else if (s.startsWith("Velocitat:")) {
-            int v = Integer.parseInt(s.substring(s.indexOf(":") + 1));
-            mod.setVel(v);
         }
     }
 

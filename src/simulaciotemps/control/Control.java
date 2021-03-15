@@ -29,7 +29,9 @@ public class Control extends Thread implements PerEsdeveniments {
     @Override
     public void notificar(String s) {
         if (s.startsWith("Parar")) {
-            //seguir = false;
+            if (prog != null) {
+                prog.getModel().notificar(s);
+            }
         } else if (s.startsWith("n^2")) {
             notificacion = s;
             this.start();

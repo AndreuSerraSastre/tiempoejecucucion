@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
+import javax.swing.JProgressBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import simulaciotemps.SimulacioTemps;
@@ -25,12 +25,13 @@ import simulaciotemps.PerEsdeveniments;
 public class Vista extends JFrame implements ActionListener, PerEsdeveniments, ChangeListener {
 
     private SimulacioTemps prog;
+    private JProgressBar porc;
 
     public Vista(String s, SimulacioTemps p) {
         super(s);
         prog = p;
         this.getContentPane().setLayout(new BorderLayout());
-        JPanel bots = new JPanel();       
+        JPanel bots = new JPanel();
         JButton boto2 = new JButton("Parar");
         boto2.addActionListener(this);
         bots.add(boto2);
@@ -46,6 +47,9 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments, C
         this.add(BorderLayout.NORTH, bots);
         PanellDibuix panell = new PanellDibuix(800, 800, prog.getModel(), this);
         this.add(BorderLayout.CENTER, panell);
+        porc = new JProgressBar();
+        porc.setValue(0);
+        this.add(porc, BorderLayout.SOUTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -71,13 +75,14 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments, C
 
     @Override
     public void notificar(String s) {
-        if (s.startsWith("Picat:")) {
-            prog.notificar(s);
-        }
+
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        prog.notificar("Velocitat:" + ((JSlider) e.getSource()).getValue());
+    }
+
+    public void progreso(double prog) {
+        porc.setValue((int) prog);
     }
 }

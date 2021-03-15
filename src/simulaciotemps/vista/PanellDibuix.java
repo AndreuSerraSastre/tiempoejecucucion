@@ -22,14 +22,14 @@ import simulaciotemps.model.Model;
  */
 public class PanellDibuix extends JPanel implements MouseListener {
 
-    private int w;
-    private int h;
-    private Model mod;
-    private Vista vis;
+    private final int w;
+    private final int h;
+    private final Model mod;
+    private final Vista vis;
     protected final int FPS = 24;  // 24 frames per segon
     private final ProcesPintat procpin;
     private BufferedImage bima;
-
+    
     public PanellDibuix(int x, int y, Model m, Vista v) {
         w = x;
         h = y;
@@ -44,35 +44,32 @@ public class PanellDibuix extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        vis.notificar("Picat:" + e.getX() + "," + e.getY());
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        ;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        ;
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        ;
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        ;
     }
 
+    @Override
     public void repaint() {
         if (this.getGraphics() != null) {
             paint(this.getGraphics());
         }
     }
 
+    @Override
     public void paint(Graphics gr) {
         if (bima == null) {
             if (this.getWidth() > 0) {
@@ -89,7 +86,7 @@ public class PanellDibuix extends JPanel implements MouseListener {
             if (temps[i] != 0) {
                 int x = iter;
                 int y = h - (int) (temps[i] / (temps[0] / 20));
-                gr.fillOval(x, y, mod.getMasa(), mod.getMasa());
+                gr.fillOval(x, y, mod.getRadi(), mod.getRadi());
 
                 Graphics2D g2d = (Graphics2D) gr;
                 if (i != 0) {
@@ -100,18 +97,20 @@ public class PanellDibuix extends JPanel implements MouseListener {
 
                 iter += 20;
             }
+            vis.progreso(mod.getPorcentaje());
         }
     }
 }
 
 class ProcesPintat extends Thread {
 
-    private PanellDibuix pan;
+    private final PanellDibuix pan;
 
     public ProcesPintat(PanellDibuix pd) {
         pan = pd;
     }
 
+    @Override
     public void run() {
         long temps = System.nanoTime();
         long tram = 1000000000L / pan.FPS;
@@ -127,7 +126,7 @@ class ProcesPintat extends Thread {
     private void espera(long t) {
         try {
             Thread.sleep(t);
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             MeuError.informaError(e);
         }
     }
