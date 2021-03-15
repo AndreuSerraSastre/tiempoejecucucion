@@ -15,36 +15,17 @@ import simulaciotemps.PerEsdeveniments;
  */
 public class Model implements PerEsdeveniments {
 
-    private SimulacioTemps prog;
-    private int[] n = {5, 10, 15, 20, 25, 30, 35};
-    private int x;
-    private int y;
-    private double grau;
-    private final int radi = 50;
-    private int vel;
-    private int masa;
-    private long[] temps = new long[n.length];
+    private final SimulacioTemps prog;
+    private final int[] n = {5, 10, 15, 20, 25};
+    private final int radi = 7;
+    private final long[] temps = new long[n.length];
     private int tipus = 0;
+    private double porcentaje = 0;
+    private int totalporcentaje = 0;
+    private int contadorporcentaje = 0;
 
     public Model(SimulacioTemps p) {
         prog = p;
-        x = y = 0;
-        grau = 0.0;
-        vel = 7;
-        masa = 7;
-    }
-
-    public void setXY(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public long[] getTemps() {
@@ -52,13 +33,14 @@ public class Model implements PerEsdeveniments {
     }
 
     private void incGrau() {
+        calcularTotal();
         for (int i = 0; i < n.length; i++) {
             temps[i] = executar(n[i]);
         }
     }
 
     private long executar(int n) {
-        long temps = System.nanoTime();
+        long tempsfuncio = System.nanoTime();
         switch (tipus) {
             case 0:
                 nnormal(n);
@@ -70,31 +52,35 @@ public class Model implements PerEsdeveniments {
                 logaritmica(n);
                 break;
         }
-        temps = System.nanoTime() - temps;
+        tempsfuncio = System.nanoTime() - tempsfuncio;
         System.out.println("Per executar " + n + " he tardat "
-                + temps + " ns.");
-        return temps;
+                + tempsfuncio + " ns.");
+        return tempsfuncio;
     }
 
     private void quadratica(int n) {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 1; i <= n; i++) {
+            añadirCalculo();
+            for (int j = 1; j <= n; j++) {
                 esperar(10);
             }
         }
     }
 
     private void nnormal(int n) {
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i <= n; i++) {
+            añadirCalculo();
             esperar(10);
         }
     }
 
     private void logaritmica(int n) {
-        double t = (int) Math.log(n);
-        System.out.println(t);
-        for (int i = 0; i < t; i++) {
-            esperar(10);
+        for (int i = 1; i <= n; i++) {
+            añadirCalculo();
+            int t2 = (int) Math.log(i);
+            for (int j = 1; j <= t2; j++) {
+                esperar(10);
+            }
         }
     }
 
@@ -110,22 +96,6 @@ public class Model implements PerEsdeveniments {
         return radi;
     }
 
-    public double getGrau() {
-        return grau;
-    }
-
-    public int getVel() {
-        return vel;
-    }
-
-    public void setVel(int v) {
-        vel = v;
-    }
-
-    public int getMasa() {
-        return masa;
-    }
-
     @Override
     public void notificar(String s) {
         if (s.startsWith("IncGrau")) {
@@ -139,6 +109,31 @@ public class Model implements PerEsdeveniments {
         } else if (s.startsWith("log(n)")) {
             tipus = 2;
             this.incGrau();
+        } else if (s.startsWith("Parar")) {
+            reiniciarDatos();
         }
+    }
+
+    private void calcularTotal() {
+        for (int i = 0; i < n.length; i++) {
+            totalporcentaje += n[i];
+        }
+    }
+
+    private void añadirCalculo() {
+        porcentaje = ++contadorporcentaje * 1.0 / totalporcentaje * 100;
+    }
+
+    public double getPorcentaje() {
+        return porcentaje;
+    }
+
+    private void reiniciarDatos() {
+        for (int i = 0; i < n.length; i++) {
+            temps[i] = 0;
+        }
+        porcentaje = 0;
+        totalporcentaje = 0;
+        contadorporcentaje = 0;
     }
 }
