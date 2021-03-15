@@ -1,0 +1,21 @@
+********************** Error date: Mon Mar 15 20:58:36 CET 2021
+java.lang.InterruptedException: sleep interrupted
+	at java.lang.Thread.sleep(Native Method)
+	at java.lang.Thread.sleep(Thread.java:340)
+	at simulaciotemps.control.Control.esperar(Control.java:80)
+	at simulaciotemps.control.Control.nnormal(Control.java:64)
+	at simulaciotemps.control.Control.executar(Control.java:37)
+	at simulaciotemps.control.Control.run(Control.java:29)
+********************** End error report
+
+********************** Error date: Mon Mar 15 21:01:40 CET 2021
+java.lang.InterruptedException: sleep interrupted
+	at java.lang.Thread.sleep(Native Method)
+	at java.lang.Thread.sleep(Thread.java:340)
+	at simulaciotemps.control.Control.esperar(Control.java:87)
+	at simulaciotemps.control.Control.loop(Control.java:81)
+	at simulaciotemps.control.Control.nnormal(Control.java:64)
+	at simulaciotemps.control.Control.executar(Control.java:39)
+	at simulaciotemps.control.Control.run(Control.java:31)
+********************** End error report
+

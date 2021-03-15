@@ -29,7 +29,7 @@ public class PanellDibuix extends JPanel implements MouseListener {
     protected final int FPS = 24;  // 24 frames per segon
     private final ProcesPintat procpin;
     private BufferedImage bima;
-    
+
     public PanellDibuix(int x, int y, Model m, Vista v) {
         w = x;
         h = y;
@@ -82,22 +82,26 @@ public class PanellDibuix extends JPanel implements MouseListener {
         gr.setColor(Color.red);
         int iter = 20;
         long[] temps = mod.getTemps();
-        for (int i = 0; i < temps.length; i++) {
-            if (temps[i] != 0) {
-                int x = iter;
-                int y = h - (int) (temps[i] / (temps[0] / 20));
-                gr.fillOval(x, y, mod.getRadi(), mod.getRadi());
+        try {
+            for (int i = 0; i < temps.length; i++) {
+                if (temps[i] != 0) {
+                    int x = iter;
+                    int y = h - (int) (temps[i] / (temps[0] / 20));
+                    gr.fillOval(x, y, mod.getRadi(), mod.getRadi());
 
-                Graphics2D g2d = (Graphics2D) gr;
-                if (i != 0) {
-                    g2d.drawLine(iter-16, h - (int) (temps[i - 1] / (temps[0] / 20)), x + 2, y);
-                } else {
-                    g2d.drawLine(0, h, x + 2, y);
+                    Graphics2D g2d = (Graphics2D) gr;
+                    if (i != 0) {
+                        g2d.drawLine(iter - 16, h - (int) (temps[i - 1] / (temps[0] / 20)), x + 2, y);
+                    } else {
+                        g2d.drawLine(0, h, x + 2, y);
+                    }
+
+                    iter += 20;
                 }
-
-                iter += 20;
+                vis.progreso(mod.getPorcentaje());
             }
-            vis.progreso(mod.getPorcentaje());
+        } catch (Exception ex) {
+            //division entre cero
         }
     }
 }
