@@ -91,10 +91,12 @@ public class Model implements PerEsdeveniments {
     }
 
     private void logaritmica(int n) {
-        double t = (int) Math.log(n);
-        System.out.println(t);
-        for (int i = 0; i < t; i++) {
+        double t;
+        for (int i = 0; i < n; i++) {
+            t = (int) Math.log(i);
+            for (int j = 0; j < t; j++) {
             esperar(10);
+            }
         }
     }
 
