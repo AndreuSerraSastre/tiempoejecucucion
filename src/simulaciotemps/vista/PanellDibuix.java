@@ -80,23 +80,25 @@ public class PanellDibuix extends JPanel implements MouseListener {
         }
         gr.drawImage(bima, 0, 0, this);
         gr.setColor(Color.red);
-        int iter = 20;
         long[] temps = mod.getTemps();
+        int incrementoX = this.getWidth() / (temps.length + 1);
+        int incrementoY = 20;
+        int iter = incrementoX;
         try {
             for (int i = 0; i < temps.length; i++) {
                 if (temps[i] != 0) {
                     int x = iter;
                     int y = h - (int) (temps[i] / (temps[0] / 20));
-                    gr.fillOval(x, y, mod.getRadi(), mod.getRadi());
+                    gr.fillOval(x - mod.getRadi()/2 , y - mod.getRadi()/2 , mod.getRadi(), mod.getRadi());
 
                     Graphics2D g2d = (Graphics2D) gr;
                     if (i != 0) {
-                        g2d.drawLine(iter - 16, h - (int) (temps[i - 1] / (temps[0] / 20)), x + 2, y);
+                        g2d.drawLine(x - incrementoX, h - (int) (temps[i - 1] / (temps[0] / incrementoY)), x, y);
                     } else {
-                        g2d.drawLine(0, h, x + 2, y);
+                        g2d.drawLine(0, h, x, y);
                     }
 
-                    iter += 20;
+                    iter += incrementoX;
                 }
                 vis.progreso(mod.getPorcentaje());
             }
