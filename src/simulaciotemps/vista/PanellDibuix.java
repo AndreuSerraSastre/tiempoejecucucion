@@ -81,24 +81,27 @@ public class PanellDibuix extends JPanel implements MouseListener {
         gr.drawImage(bima, 0, 0, this);
         gr.setColor(Color.red);
         long[] temps = mod.getTemps();
-        int incrementoX = this.getWidth() / (temps.length + 1);
-        int incrementoY = 20;
+        int incrementoX = this.getWidth() / (mod.getn()[mod.getn().length - 1] + 4);
+        int incrementoY = 5;
         int iter = incrementoX;
         try {
             for (int i = 0; i < temps.length; i++) {
                 if (temps[i] != 0) {
+                    if (i % mod.getn().length == 0) {
+                        iter = incrementoX * mod.getn()[i % mod.getn().length];
+                    }
                     int x = iter;
-                    int y = h - (int) (temps[i] / (temps[0] / 20));
-                    gr.fillOval(x - mod.getRadi()/2 , y - mod.getRadi()/2 , mod.getRadi(), mod.getRadi());
+                    int y = h - (int) (temps[i] / (temps[0] / incrementoY));
+                    gr.fillOval(x - mod.getRadi() / 2, y - mod.getRadi() / 2, mod.getRadi(), mod.getRadi());
 
                     Graphics2D g2d = (Graphics2D) gr;
-                    if (i != 0) {
-                        g2d.drawLine(x - incrementoX, h - (int) (temps[i - 1] / (temps[0] / incrementoY)), x, y);
+                    if (i % mod.getn().length != 0) {
+                        g2d.drawLine(x - (incrementoX * mod.getn()[(i - 1) % mod.getn().length]), h - (int) (temps[i - 1] / (temps[0] / incrementoY)), x, y);
                     } else {
                         g2d.drawLine(0, h, x, y);
                     }
 
-                    iter += incrementoX;
+                    iter += incrementoX * mod.getn()[i % mod.getn().length];
                 }
                 vis.progreso(mod.getPorcentaje());
             }

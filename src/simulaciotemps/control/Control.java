@@ -5,6 +5,7 @@
  */
 package simulaciotemps.control;
 
+import java.util.concurrent.TimeUnit;
 import simulaciotemps.MeuError;
 import simulaciotemps.SimulacioTemps;
 import simulaciotemps.PerEsdeveniments;
@@ -27,9 +28,15 @@ public class Control extends Thread implements PerEsdeveniments {
     public void run() {
         seguir = true;
         prog.getModel().calcularTotal();
-        for (int i = 0; i < prog.getModel().nlength(); i++) {
-            prog.getModel().setTemps(i, executar(prog.getModel().getn()[i]));
+        int max = prog.getModel().nlength() + (prog.getModel().getExecucio() * prog.getModel().nlength());
+        imprimirCabecera();
+        for (int i = prog.getModel().getExecucio() * prog.getModel().nlength(); i < max; i++) {
+            if (seguir) {
+                prog.getModel().setTemps(i, executar(prog.getModel().getn()[i % prog.getModel().nlength()]));
+            }
         }
+        prog.getModel().setExecucio((prog.getModel().getExecucio() + 1) % prog.getModel().getNmetodos());
+        prog.notificar("Parar");
     }
 
     private long executar(int n) {
@@ -46,9 +53,19 @@ public class Control extends Thread implements PerEsdeveniments {
                 break;
         }
         tempsfuncio = System.nanoTime() - tempsfuncio;
-        System.out.println("Per executar " + n + " he tardat "
-                + tempsfuncio + " ns.");
+        System.out.println("Per executar " + n + " iteracions ha tardat "
+                + formatNano(tempsfuncio) + " s.");
+        if (!seguir) {
+            return 0;
+        }
         return tempsfuncio;
+    }
+
+    private String formatNano(long temps) {
+        long segundos = TimeUnit.SECONDS.convert(temps, TimeUnit.NANOSECONDS);
+        long milisegundos = TimeUnit.MILLISECONDS.convert(temps - (segundos * 1000 * 1000 * 1000), TimeUnit.NANOSECONDS);
+
+        return segundos + "." + milisegundos;
     }
 
     private void quadratica(int n) {
@@ -70,12 +87,17 @@ public class Control extends Thread implements PerEsdeveniments {
         }
     }
 
+    private int log2(int n) {
+        int result = (int) (Math.log(n) / Math.log(2));
+        return result;
+    }
+
     private void logaritmica(int n) {
         int i = 0;
         while (i++ < n && seguir) {
             prog.getModel().añadirCalculo();
             int j = 0;
-            while (j++ < (int) Math.log(i) && seguir) {
+            while (j++ < log2(n) && seguir) {
                 esperar(10);
             }
         }
@@ -95,6 +117,7 @@ public class Control extends Thread implements PerEsdeveniments {
             if (prog != null) {
                 seguir = false;
                 prog.getModel().notificar(s);
+                System.out.println("La execució s'ha turat amb èxit.");
             }
         } else if (s.startsWith("n^2")) {
             tipus = 1;
@@ -105,6 +128,20 @@ public class Control extends Thread implements PerEsdeveniments {
         } else if (s.startsWith("log(n)")) {
             tipus = 2;
             this.start();
+        }
+    }
+
+    private void imprimirCabecera() {
+        switch (tipus) {
+            case 0:
+                System.out.println("--- Execució de n: ---");
+                break;
+            case 1:
+                System.out.println("--- Execució de n^2: ---");
+                break;
+            case 2:
+                System.out.println("--- Execució de n·log(n): ---");
+                break;
         }
     }
 }
