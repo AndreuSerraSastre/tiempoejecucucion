@@ -80,6 +80,11 @@ public class PanellDibuix extends JPanel implements MouseListener {
         }
         gr.drawImage(bima, 0, 0, this);
         gr.setColor(Color.red);
+        pintarGrafica(gr);
+
+    }
+
+    private void pintarGrafica(Graphics gr) {
         long[] temps = mod.getTemps();
         int incrementoX = this.getWidth() / (mod.getn()[mod.getn().length - 1] + 4);
         int incrementoY = 5;
