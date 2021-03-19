@@ -41,7 +41,7 @@ public class Vista extends JFrame implements ActionListener, PerEsdeveniments, C
         JButton boto4 = new JButton("n^2");
         boto4.addActionListener(this);
         bots.add(boto4);
-        JButton boto5 = new JButton("log(n)");
+        JButton boto5 = new JButton("nlog(n)");
         boto5.addActionListener(this);
         bots.add(boto5);
         this.add(BorderLayout.NORTH, bots);

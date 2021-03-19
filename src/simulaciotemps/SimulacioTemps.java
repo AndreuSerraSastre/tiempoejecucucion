@@ -48,17 +48,17 @@ public class SimulacioTemps implements PerEsdeveniments {
                 con.notificar(s);
                 con = null;
             }
-        } else if (s.startsWith("n")) {
-            if (con == null) {
-                con = new Control(this);
-                con.notificar(s);
-            }
         } else if (s.startsWith("n^2")) {
             if (con == null) {
                 con = new Control(this);
                 con.notificar(s);
             }
-        } else if (s.startsWith("log(n)")) {
+        } else if (s.startsWith("nlog(n)")) {
+            if (con == null) {
+                con = new Control(this);
+                con.notificar(s);
+            }
+        } else if (s.startsWith("n")) {
             if (con == null) {
                 con = new Control(this);
                 con.notificar(s);

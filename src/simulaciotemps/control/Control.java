@@ -122,11 +122,11 @@ public class Control extends Thread implements PerEsdeveniments {
         } else if (s.startsWith("n^2")) {
             tipus = 1;
             this.start();
+        } else if (s.startsWith("nlog(n)")) {
+            tipus = 2;
+            this.start();
         } else if (s.startsWith("n")) {
             tipus = 0;
-            this.start();
-        } else if (s.startsWith("log(n)")) {
-            tipus = 2;
             this.start();
         }
     }

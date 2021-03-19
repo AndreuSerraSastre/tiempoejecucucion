@@ -1,2 +1,0 @@
-simulaciotemps.vista.PanellDibuix
-simulaciotemps.vista.ProcesPintat
